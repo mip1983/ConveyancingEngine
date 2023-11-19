@@ -4,8 +4,11 @@
 
 @using ConveyancingEngine.Model
 @using ConveyancingEngine.Service
+@using Microsoft.AspNetCore.Antiforgery
 
 @inject IQuoteService quoteService
+
+@attribute [RequireAntiforgeryToken(required: true)]
 
 <h3>Get a Quote</h3>
 
