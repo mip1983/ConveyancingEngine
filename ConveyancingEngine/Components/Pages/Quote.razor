@@ -47,7 +47,7 @@
         }
         else if (quoteRequest != null)
         {
-            <form @onsubmit="GetQuote">
+            <form @onsubmit="GetQuote" name="quoteRequest">
                 <AntiforgeryToken />
                 <div class="form-group mb-2">
                     <label for="propertyValue">Property Value</label>
