@@ -1,0 +1,133 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+
+@using ConveyancingEngine.Model
+@using ConveyancingEngine.Service
+
+@inject IQuoteService quoteService
+
+<h3>Get a Quote</h3>
+
+<div class="row justify-content-md-center">
+    <div class="col-md-8">
+
+        @if (quoteResponse != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fee</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var fee in quoteResponse.Fees)
+                    {
+                        <tr>
+                            <td>@fee.Name</td>
+                            <td>@fee.Cost</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Total</td>
+                        <td>@quoteResponse.Total</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="mt-5">
+                <button type="button" class="btn btn-primary" @onclick="Clear">Clear</button>
+            </div>
+        }
+        else if (quoteRequest != null)
+        {
+            <form @onsubmit="GetQuote">
+                <AntiforgeryToken />
+                <div class="form-group mb-2">
+                    <label for="propertyValue">Property Value</label>
+                    <InputNumber @bind-Value="quoteRequest.PropertyValue" class="form-control" id="propertyValue" name="propertyValue" required />
+                </div>
+                <div class="form-group  mb-2">
+                    <label for="postcode">Postcode</label>
+                    <InputText @bind-Value="quoteRequest.Postcode" class="form-control" id="postcode" name="postcode" required />
+                </div>
+                <div class="form-group  mb-2">
+                    <label for="transactionType">Transaction Type</label>
+                    <InputSelect @bind-Value="quoteRequest.TransactionType" class="form-control" id="transactionType" name="transactionType" required>
+                        @foreach (var transactionType in Enum.GetValues(typeof(TransactionType)))
+                        {
+                            <option value="@transactionType">@transactionType</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="form-group mb-5">
+                    <div class="form-group">
+                        <label for="addOns">Add-Ons</label>
+                        <div class="form-group">
+                            @foreach (var addOn in quoteAddOns)
+                            {
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="@addOn.Name" name="addOns" @onchange="e => { AddonSelected(addOn, e.Value); }" />
+                                    <label class="form-check-label" for="@addOn.Name">@addOn.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Get Quote</button>
+            </form>
+        }
+
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    public QuoteRequest? quoteRequest { get; set; }
+
+    private QuoteResponse? quoteResponse;
+
+    private List<QuoteAddOn> quoteAddOns = new List<QuoteAddOn>();
+
+    private void Clear()
+    {
+        quoteRequest = new();
+        quoteResponse = null;
+    }
+
+    private void GetQuote()
+    {
+        if (quoteRequest == null)
+        {
+            return;
+        }
+
+        quoteResponse = quoteService.GetQuote(quoteRequest);
+    }
+
+    protected override void OnInitialized()
+    {
+        quoteRequest ??= new();
+        this.quoteAddOns = quoteService.GetQuoteAddOns();
+    }
+
+    private void AddonSelected(QuoteAddOn addOn, object? selected)
+    {
+        if (quoteRequest == null || selected == null)
+        {
+            return;
+        }
+
+        if ((bool)selected)
+        {
+            quoteRequest.AddOns.Add(addOn);
+        }
+        else
+        {
+            quoteRequest.AddOns.Remove(addOn);
+        }
+    }
+}

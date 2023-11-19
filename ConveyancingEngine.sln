@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConveyancingEngine", "ConveyancingEngine\ConveyancingEngine.csproj", "{DF1EA5F7-11A6-4C06-9646-AF251AEEDC27}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF1EA5F7-11A6-4C06-9646-AF251AEEDC27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF1EA5F7-11A6-4C06-9646-AF251AEEDC27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF1EA5F7-11A6-4C06-9646-AF251AEEDC27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF1EA5F7-11A6-4C06-9646-AF251AEEDC27}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {482464E6-A459-463F-AE10-CCC9AEABBAAB}
+	EndGlobalSection
+EndGlobal
